@@ -3,11 +3,11 @@
 <title>Static Call Graph - [BME280_ARM\BME280_ARM.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image BME280_ARM\BME280_ARM.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Fri Mar 09 23:21:53 2018
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Fri May 04 08:00:33 2018
 <BR><P>
 <H3>Maximum Stack Usage =        160 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
-main &rArr; BME280_initialize &rArr; HAL_I2C_Master_Receive &rArr; I2C_MasterRequestRead &rArr; I2C_WaitOnMasterAddressFlagUntilTimeout
+main &rArr; BME280_Init &rArr; HAL_I2C_Master_Receive &rArr; I2C_MasterRequestRead &rArr; I2C_WaitOnMasterAddressFlagUntilTimeout
 <P>
 <H3>
 Mutually Recursive functions
@@ -246,12 +246,12 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[3b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_float_round
 </UL>
-<BR>[Called By]<UL><LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BME280_getTemperature
-<LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BME280_getPressure
+<BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BME280_getTemperature
+<LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BME280_getPressure
 </UL>
 
-<P><STRONG><a name="[43]"></a>__ARM_scalbnf</STRONG> (Thumb, 24 bytes, Stack size 0 bytes, fscalb.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BME280_getHumidity
+<P><STRONG><a name="[44]"></a>__ARM_scalbnf</STRONG> (Thumb, 24 bytes, Stack size 0 bytes, fscalb.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BME280_getHumidity
 </UL>
 
 <P><STRONG><a name="[6c]"></a>scalbnf</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, fscalb.o(.text), UNUSED)
@@ -261,8 +261,8 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_float_epilogue
 </UL>
-<BR>[Called By]<UL><LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BME280_getTemperature
-<LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BME280_getHumidity
+<BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BME280_getTemperature
+<LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BME280_getHumidity
 </UL>
 
 <P><STRONG><a name="[3e]"></a>__aeabi_ui2f</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, ffltui.o(.text))
@@ -270,7 +270,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[3d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_float_epilogue
 </UL>
-<BR>[Called By]<UL><LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BME280_getPressure
+<BR>[Called By]<UL><LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BME280_getPressure
 </UL>
 
 <P><STRONG><a name="[6d]"></a>__I$use$fp</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, iusefp.o(.text), UNUSED)
@@ -294,18 +294,27 @@ Global Symbols
 
 <P><STRONG><a name="[6e]"></a>__scatterload_rt2</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, init.o(.text), UNUSED)
 
-<P><STRONG><a name="[40]"></a>BME280_getHumidity</STRONG> (Thumb, 166 bytes, Stack size 16 bytes, bme280.o(i.BME280_getHumidity))
+<P><STRONG><a name="[40]"></a>BME280_Init</STRONG> (Thumb, 352 bytes, Stack size 40 bytes, bme280.o(i.BME280_Init))
+<BR><BR>[Stack]<UL><LI>Max Depth = 152<LI>Call Chain = BME280_Init &rArr; HAL_I2C_Master_Receive &rArr; I2C_MasterRequestRead &rArr; I2C_WaitOnMasterAddressFlagUntilTimeout
+</UL>
+<BR>[Calls]<UL><LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_I2C_Master_Transmit
+<LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_I2C_Master_Receive
+</UL>
+<BR>[Called By]<UL><LI><a href="#[35]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+</UL>
+
+<P><STRONG><a name="[43]"></a>BME280_getHumidity</STRONG> (Thumb, 166 bytes, Stack size 16 bytes, bme280.o(i.BME280_getHumidity))
 <BR><BR>[Stack]<UL><LI>Max Depth = 128<LI>Call Chain = BME280_getHumidity &rArr; HAL_I2C_Master_Receive &rArr; I2C_MasterRequestRead &rArr; I2C_WaitOnMasterAddressFlagUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2f
-<LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_scalbnf
+<LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__ARM_scalbnf
 <LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_I2C_Master_Transmit
 <LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_I2C_Master_Receive
 </UL>
 <BR>[Called By]<UL><LI><a href="#[35]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[44]"></a>BME280_getPressure</STRONG> (Thumb, 224 bytes, Stack size 24 bytes, bme280.o(i.BME280_getPressure))
+<P><STRONG><a name="[45]"></a>BME280_getPressure</STRONG> (Thumb, 224 bytes, Stack size 24 bytes, bme280.o(i.BME280_getPressure))
 <BR><BR>[Stack]<UL><LI>Max Depth = 136<LI>Call Chain = BME280_getPressure &rArr; HAL_I2C_Master_Receive &rArr; I2C_MasterRequestRead &rArr; I2C_WaitOnMasterAddressFlagUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[3e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_ui2f
@@ -316,21 +325,12 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[35]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[45]"></a>BME280_getTemperature</STRONG> (Thumb, 122 bytes, Stack size 16 bytes, bme280.o(i.BME280_getTemperature))
+<P><STRONG><a name="[46]"></a>BME280_getTemperature</STRONG> (Thumb, 122 bytes, Stack size 16 bytes, bme280.o(i.BME280_getTemperature))
 <BR><BR>[Stack]<UL><LI>Max Depth = 128<LI>Call Chain = BME280_getTemperature &rArr; HAL_I2C_Master_Receive &rArr; I2C_MasterRequestRead &rArr; I2C_WaitOnMasterAddressFlagUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[3c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_i2f
 <LI><a href="#[3a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_fdiv
 <LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_I2C_Master_Transmit
-<LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_I2C_Master_Receive
-</UL>
-<BR>[Called By]<UL><LI><a href="#[35]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-</UL>
-
-<P><STRONG><a name="[46]"></a>BME280_initialize</STRONG> (Thumb, 352 bytes, Stack size 40 bytes, bme280.o(i.BME280_initialize))
-<BR><BR>[Stack]<UL><LI>Max Depth = 152<LI>Call Chain = BME280_initialize &rArr; HAL_I2C_Master_Receive &rArr; I2C_MasterRequestRead &rArr; I2C_WaitOnMasterAddressFlagUntilTimeout
-</UL>
-<BR>[Calls]<UL><LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_I2C_Master_Transmit
 <LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_I2C_Master_Receive
 </UL>
 <BR>[Called By]<UL><LI><a href="#[35]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -390,10 +390,10 @@ Global Symbols
 <LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2C_WaitOnFlagUntilTimeout
 <LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2C_MasterRequestRead
 </UL>
-<BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BME280_initialize
-<LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BME280_getTemperature
-<LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BME280_getPressure
-<LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BME280_getHumidity
+<BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BME280_getTemperature
+<LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BME280_getPressure
+<LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BME280_getHumidity
+<LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BME280_Init
 </UL>
 
 <P><STRONG><a name="[41]"></a>HAL_I2C_Master_Transmit</STRONG> (Thumb, 304 bytes, Stack size 40 bytes, stm32f1xx_hal_i2c.o(i.HAL_I2C_Master_Transmit))
@@ -405,10 +405,10 @@ Global Symbols
 <LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2C_WaitOnBTFFlagUntilTimeout
 <LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;I2C_MasterRequestWrite
 </UL>
-<BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BME280_initialize
-<LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BME280_getTemperature
-<LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BME280_getPressure
-<LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BME280_getHumidity
+<BR>[Called By]<UL><LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BME280_getTemperature
+<LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BME280_getPressure
+<LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BME280_getHumidity
+<LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BME280_Init
 </UL>
 
 <P><STRONG><a name="[4a]"></a>HAL_I2C_MspInit</STRONG> (Thumb, 54 bytes, Stack size 24 bytes, stm32f1xx_hal_msp.o(i.HAL_I2C_MspInit))
@@ -585,14 +585,14 @@ Global Symbols
 <P><STRONG><a name="[71]"></a>__scatterload_zeroinit</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_zeroinit), UNUSED)
 
 <P><STRONG><a name="[35]"></a>main</STRONG> (Thumb, 102 bytes, Stack size 8 bytes, main.o(i.main))
-<BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = main &rArr; BME280_initialize &rArr; HAL_I2C_Master_Receive &rArr; I2C_MasterRequestRead &rArr; I2C_WaitOnMasterAddressFlagUntilTimeout
+<BR><BR>[Stack]<UL><LI>Max Depth = 160<LI>Call Chain = main &rArr; BME280_Init &rArr; HAL_I2C_Master_Receive &rArr; I2C_MasterRequestRead &rArr; I2C_WaitOnMasterAddressFlagUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Init
 <LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Delay
-<LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BME280_initialize
-<LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BME280_getTemperature
-<LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BME280_getPressure
-<LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BME280_getHumidity
+<LI><a href="#[46]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BME280_getTemperature
+<LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BME280_getPressure
+<LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BME280_getHumidity
+<LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BME280_Init
 <LI><a href="#[63]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemClock_Config
 <LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_I2C1_Init
 </UL>

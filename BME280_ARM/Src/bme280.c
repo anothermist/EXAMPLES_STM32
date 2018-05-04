@@ -10,7 +10,7 @@ extern I2C_HandleTypeDef BME280_I2C;
     int16_t     dig_H2, dig_H4, dig_H5, dig_H6;
     int32_t     t_fine;
  
-void BME280_initialize(void)
+void BME280_Init(void)
 {
     uint8_t cmd[18];
 

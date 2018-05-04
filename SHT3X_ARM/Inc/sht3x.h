@@ -10,7 +10,7 @@
 #define SHT3X_I2C 			hi2c1
 #define SHT3X_ADDR_0		0x44
 #define SHT3X_ADDR_1		0x45
-#define SHT3X_ADDR		(SHT3X_ADDR_0)<<1
+#define SHT3X_ADDR		(SHT3X_ADDR_0) << 1
 
 #define SHT3X_I2C_TIMEOUT 	100
 
