@@ -90,7 +90,35 @@ float BME280_getTemperature(void)
     return (tempf/100.0f);
 }
  
-float BME280_getPressure(void)
+float BME280_getHumidity(void)
+{
+    uint32_t hum_raw;
+    float humf;
+    uint8_t cmd[4];
+ 
+    cmd[0] = 0xFD; // hum_msb
+		HAL_I2C_Master_Transmit(&BME280_I2C, BME280_ADDR, cmd, 1, BME280_I2C_TIMEOUT);
+		HAL_I2C_Master_Receive(&BME280_I2C, BME280_ADDR, &cmd[1], 2, BME280_I2C_TIMEOUT);
+ 
+    hum_raw = (cmd[1] << 8) | cmd[2];
+ 
+    int32_t v_x1;
+ 
+    v_x1 = t_fine - 76800;
+    v_x1 =  (((((hum_raw << 14) -(((int32_t)dig_H4) << 20) - (((int32_t)dig_H5) * v_x1)) +
+               ((int32_t)16384)) >> 15) * (((((((v_x1 * (int32_t)dig_H6) >> 10) *
+                                            (((v_x1 * ((int32_t)dig_H3)) >> 11) + 32768)) >> 10) + 2097152) *
+                                            (int32_t)dig_H2 + 8192) >> 14));
+    v_x1 = (v_x1 - (((((v_x1 >> 15) * (v_x1 >> 15)) >> 7) * (int32_t)dig_H1) >> 4));
+    v_x1 = (v_x1 < 0 ? 0 : v_x1);
+    v_x1 = (v_x1 > 419430400 ? 419430400 : v_x1);
+ 
+    humf = (float)(v_x1 >> 12);
+ 
+    return (humf/1024.0f);
+}
+
+uint16_t BME280_getPressure(void)
 {
     uint32_t press_raw;
     float pressf;
@@ -127,31 +155,4 @@ float BME280_getPressure(void)
     pressf = (float)press;
     return (pressf/100.0f);
 }
- 
-float BME280_getHumidity(void)
-{
-    uint32_t hum_raw;
-    float humf;
-    uint8_t cmd[4];
- 
-    cmd[0] = 0xFD; // hum_msb
-		HAL_I2C_Master_Transmit(&BME280_I2C, BME280_ADDR, cmd, 1, BME280_I2C_TIMEOUT);
-		HAL_I2C_Master_Receive(&BME280_I2C, BME280_ADDR, &cmd[1], 2, BME280_I2C_TIMEOUT);
- 
-    hum_raw = (cmd[1] << 8) | cmd[2];
- 
-    int32_t v_x1;
- 
-    v_x1 = t_fine - 76800;
-    v_x1 =  (((((hum_raw << 14) -(((int32_t)dig_H4) << 20) - (((int32_t)dig_H5) * v_x1)) +
-               ((int32_t)16384)) >> 15) * (((((((v_x1 * (int32_t)dig_H6) >> 10) *
-                                            (((v_x1 * ((int32_t)dig_H3)) >> 11) + 32768)) >> 10) + 2097152) *
-                                            (int32_t)dig_H2 + 8192) >> 14));
-    v_x1 = (v_x1 - (((((v_x1 >> 15) * (v_x1 >> 15)) >> 7) * (int32_t)dig_H1) >> 4));
-    v_x1 = (v_x1 < 0 ? 0 : v_x1);
-    v_x1 = (v_x1 > 419430400 ? 419430400 : v_x1);
- 
-    humf = (float)(v_x1 >> 12);
- 
-    return (humf/1024.0f);
-}
+

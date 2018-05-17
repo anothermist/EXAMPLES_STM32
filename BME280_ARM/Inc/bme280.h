@@ -16,8 +16,8 @@
 
 void BME280_Init(void);
 float BME280_getTemperature(void);
-float BME280_getPressure(void);
 float BME280_getHumidity(void);
+uint16_t BME280_getPressure(void);
 
 #ifdef __cplusplus
 }
