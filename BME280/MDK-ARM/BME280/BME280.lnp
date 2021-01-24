@@ -1,0 +1,25 @@
+--cpu Cortex-M3
+"bme280\startup_stm32f103xb.o"
+"bme280\main.o"
+"bme280\stm32f1xx_it.o"
+"bme280\stm32f1xx_hal_msp.o"
+"bme280\bme280.o"
+"bme280\stm32f1xx_hal_gpio_ex.o"
+"bme280\stm32f1xx_hal_i2c.o"
+"bme280\stm32f1xx_hal.o"
+"bme280\stm32f1xx_hal_rcc.o"
+"bme280\stm32f1xx_hal_rcc_ex.o"
+"bme280\stm32f1xx_hal_gpio.o"
+"bme280\stm32f1xx_hal_dma.o"
+"bme280\stm32f1xx_hal_cortex.o"
+"bme280\stm32f1xx_hal_pwr.o"
+"bme280\stm32f1xx_hal_flash.o"
+"bme280\stm32f1xx_hal_flash_ex.o"
+"bme280\stm32f1xx_hal_exti.o"
+"bme280\stm32f1xx_hal_tim.o"
+"bme280\stm32f1xx_hal_tim_ex.o"
+"bme280\system_stm32f1xx.o"
+--library_type=microlib --strict --scatter "BME280\BME280.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "BME280.map" -o BME280\BME280.axf
