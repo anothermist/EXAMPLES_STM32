@@ -4,35 +4,14 @@
   * @file           : main.c
   * @brief          : Main program body
   ******************************************************************************
-  ** This notice applies to any and all portions of this file
-  * that are not between comment pairs USER CODE BEGIN and
-  * USER CODE END. Other portions of this file, whether 
-  * inserted by the user or by software development tools
-  * are owned by their respective copyright owners.
+  * @attention
   *
-  * COPYRIGHT(c) 2019 STMicroelectronics
+  * Copyright (c) 2022 STMicroelectronics.
+  * All rights reserved.
   *
-  * Redistribution and use in source and binary forms, with or without modification,
-  * are permitted provided that the following conditions are met:
-  *   1. Redistributions of source code must retain the above copyright notice,
-  *      this list of conditions and the following disclaimer.
-  *   2. Redistributions in binary form must reproduce the above copyright notice,
-  *      this list of conditions and the following disclaimer in the documentation
-  *      and/or other materials provided with the distribution.
-  *   3. Neither the name of STMicroelectronics nor the names of its contributors
-  *      may be used to endorse or promote products derived from this software
-  *      without specific prior written permission.
-  *
-  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-  * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-  * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  * This software is licensed under terms that can be found in the LICENSE file
+  * in the root directory of this software component.
+  * If no LICENSE file comes with this software, it is provided AS-IS.
   *
   ******************************************************************************
   */
@@ -43,7 +22,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
-#include "dwt_stm32_delay.h"
+#include "string.h"
+#include "ir_remote.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -62,71 +42,25 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
-I2C_HandleTypeDef hi2c1;
+TIM_HandleTypeDef htim4;
 
 UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
-
+decode_results results;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
-static void MX_I2C1_Init(void);
 static void MX_USART1_UART_Init(void);
+static void MX_TIM4_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
-uint32_t data;
-uint8_t count;
-		
-uint32_t receive_data (void)
-{
-	uint32_t code=0;
-	
-		  /* The START Sequence begin here
-	   * there will be a pulse of 9ms LOW and
-	   * than 4.5 ms space (HIGH)
-	   */
-	  while (!(HAL_GPIO_ReadPin (GPIOB, GPIO_PIN_5)));  // wait for the pin to go high.. 9ms LOW
-
-	  while ((HAL_GPIO_ReadPin (GPIOB, GPIO_PIN_5)));  // wait for the pin to go low.. 4.5ms HIGH
-
-	  /* START of FRAME ends here*/
-
-	  /* DATA Reception
-	   * We are only going to check the SPACE after 562.5us pulse
-	   * if the space is 562.5us, the bit indicates '0'
-	   * if the space is around 1.6ms, the bit is '1'
-	   */
-
-	  for (int i=0; i<32; i++)
-	  {
-		  count=0;
-
-		  while (!(HAL_GPIO_ReadPin (GPIOB, GPIO_PIN_5))); // wait for pin to go high.. this is 562.5us LOW
-
-		  while ((HAL_GPIO_ReadPin (GPIOB, GPIO_PIN_5)))  // count the space length while the pin is high
-		  {
-			  count++;
-			  DWT_Delay_us(100);
-		  }
-
-		  if (count > 12) // if the space is more than 1.2 ms
-		  {
-			  code |= (1UL << (31-i));   // write 1
-		  }
-
-		  else code &= ~(1UL << (31-i));  // write 0
-	  }
-		
-		return code;
-}
 
 /* USER CODE END 0 */
 
@@ -158,39 +92,30 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_I2C1_Init();
   MX_USART1_UART_Init();
+  MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
+  char trans_str[64] = {0,};
+  snprintf(trans_str, 64, "IR-receiver\r\n");
+  HAL_UART_Transmit(&huart1, (uint8_t*)trans_str, strlen(trans_str), 100);
 
-	DWT_Delay_Init ();
-
-//	HAL_UART_Transmit(&huart1, uart_tx, sizeof(uart_tx), 100);
+  my_enableIRIn();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	if(my_decode(&results))
+	{
+		snprintf(trans_str, 64, "Code: HEX %p DEC %lu\r\n", (void*)results.value, results.value);
+		HAL_UART_Transmit(&huart1, (uint8_t*)trans_str, strlen(trans_str), 100);
+		HAL_Delay(300);
+		my_resume();
+	}
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  
-
-	  while (HAL_GPIO_ReadPin (GPIOB, GPIO_PIN_5));   // wait for the pin to go low
-		
-		data = receive_data ();
-		
-		uint8_t uart_tx[8] = {0};// = "UART OK \r\n";
-		sprintf(uart_tx, "%p", data);
-		HAL_UART_Transmit(&huart1, uart_tx, sizeof(uart_tx), 100);
-
-		uint8_t uart_tx_new[] = "\r\n";
-		HAL_UART_Transmit(&huart1, uart_tx_new, sizeof(uart_tx_new), 100);
-
-//		convert_code (data);
-
-		HAL_Delay (200);
-		
   }
   /* USER CODE END 3 */
 }
@@ -234,36 +159,47 @@ void SystemClock_Config(void)
 }
 
 /**
-  * @brief I2C1 Initialization Function
+  * @brief TIM4 Initialization Function
   * @param None
   * @retval None
   */
-static void MX_I2C1_Init(void)
+static void MX_TIM4_Init(void)
 {
 
-  /* USER CODE BEGIN I2C1_Init 0 */
+  /* USER CODE BEGIN TIM4_Init 0 */
 
-  /* USER CODE END I2C1_Init 0 */
+  /* USER CODE END TIM4_Init 0 */
 
-  /* USER CODE BEGIN I2C1_Init 1 */
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
 
-  /* USER CODE END I2C1_Init 1 */
-  hi2c1.Instance = I2C1;
-  hi2c1.Init.ClockSpeed = 100000;
-  hi2c1.Init.DutyCycle = I2C_DUTYCYCLE_2;
-  hi2c1.Init.OwnAddress1 = 0;
-  hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
-  hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
-  hi2c1.Init.OwnAddress2 = 0;
-  hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
-  hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
-  if (HAL_I2C_Init(&hi2c1) != HAL_OK)
+  /* USER CODE BEGIN TIM4_Init 1 */
+
+  /* USER CODE END TIM4_Init 1 */
+  htim4.Instance = TIM4;
+  htim4.Init.Prescaler = 71;
+  htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim4.Init.Period = 49;
+  htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim4.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim4) != HAL_OK)
   {
     Error_Handler();
   }
-  /* USER CODE BEGIN I2C1_Init 2 */
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim4, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim4, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM4_Init 2 */
 
-  /* USER CODE END I2C1_Init 2 */
+  /* USER CODE END TIM4_Init 2 */
 
 }
 

@@ -7,23 +7,23 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
   1 .text         00002438  0800010c  0800010c  0001010c  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .rodata       00000068  08002544  08002544  00012544  2**2
+  2 .rodata       00000064  08002544  08002544  00012544  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  3 .ARM.extab    00000000  080025ac  080025ac  00020070  2**0
+  3 .ARM.extab    00000000  080025a8  080025a8  00020070  2**0
                   CONTENTS
-  4 .ARM          00000000  080025ac  080025ac  00020070  2**0
+  4 .ARM          00000000  080025a8  080025a8  00020070  2**0
                   CONTENTS
-  5 .preinit_array 00000000  080025ac  080025ac  00020070  2**0
+  5 .preinit_array 00000000  080025a8  080025a8  00020070  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  6 .init_array   00000004  080025ac  080025ac  000125ac  2**2
+  6 .init_array   00000004  080025a8  080025a8  000125a8  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  7 .fini_array   00000004  080025b0  080025b0  000125b0  2**2
+  7 .fini_array   00000004  080025ac  080025ac  000125ac  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  8 .data         00000070  20000000  080025b4  00020000  2**2
+  8 .data         00000070  20000000  080025b0  00020000  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  9 .bss          000000d4  20000070  08002624  00020070  2**2
+  9 .bss          000000d4  20000070  08002620  00020070  2**2
                   ALLOC
- 10 ._user_heap_stack 00000604  20000144  08002624  00020144  2**0
+ 10 ._user_heap_stack 00000604  20000144  08002620  00020144  2**0
                   ALLOC
  11 .ARM.attributes 00000029  00000000  00000000  00020070  2**0
                   CONTENTS, READONLY
@@ -2735,7 +2735,7 @@ if (((RCC_ClkInitStruct->ClockType) & RCC_CLOCKTYPE_PCLK1) == RCC_CLOCKTYPE_PCLK
  80010a2:	bf00      	nop
  80010a4:	40022000 	.word	0x40022000
  80010a8:	40021000 	.word	0x40021000
- 80010ac:	08002560 	.word	0x08002560
+ 80010ac:	0800255c 	.word	0x0800255c
  80010b0:	20000008 	.word	0x20000008
  80010b4:	20000000 	.word	0x20000000
 
@@ -2931,7 +2931,7 @@ uint32_t HAL_RCC_GetPCLK1Freq(void)
  80011a4:	4618      	mov	r0, r3
  80011a6:	bd80      	pop	{r7, pc}
  80011a8:	40021000 	.word	0x40021000
- 80011ac:	08002570 	.word	0x08002570
+ 80011ac:	0800256c 	.word	0x0800256c
 
 080011b0 <HAL_RCC_GetPCLK2Freq>:
   * @note   Each time PCLK2 changes, this function must be called to update the
@@ -2957,7 +2957,7 @@ uint32_t HAL_RCC_GetPCLK2Freq(void)
  80011cc:	4618      	mov	r0, r3
  80011ce:	bd80      	pop	{r7, pc}
  80011d0:	40021000 	.word	0x40021000
- 80011d4:	08002570 	.word	0x08002570
+ 80011d4:	0800256c 	.word	0x0800256c
 
 080011d8 <RCC_Delay>:
   * @brief  This function provides delay (in milliseconds) based on CPU cycles method.
@@ -3918,7 +3918,7 @@ int main(void)
  800171a:	60bb      	str	r3, [r7, #8]
  800171c:	2300      	movs	r3, #0
  800171e:	60fb      	str	r3, [r7, #12]
-		sprintf(uart_tx, "0x%X", data);
+		sprintf(uart_tx, "%p", data);
  8001720:	4b11      	ldr	r3, [pc, #68]	; (8001768 <main+0x88>)
  8001722:	681a      	ldr	r2, [r3, #0]
  8001724:	f107 0308 	add.w	r3, r7, #8
@@ -3960,7 +3960,7 @@ int main(void)
  8001768:	20000128 	.word	0x20000128
  800176c:	08002554 	.word	0x08002554
  8001770:	200000e4 	.word	0x200000e4
- 8001774:	0800255c 	.word	0x0800255c
+ 8001774:	08002558 	.word	0x08002558
 
 08001778 <SystemClock_Config>:
 /**
@@ -4886,7 +4886,7 @@ LoopFillZerobss:
   ldr r1, =_edata
  8001bc0:	20000070 	.word	0x20000070
   ldr r2, =_sidata
- 8001bc4:	080025b4 	.word	0x080025b4
+ 8001bc4:	080025b0 	.word	0x080025b0
   ldr r2, =_sbss
  8001bc8:	20000070 	.word	0x20000070
   ldr r4, =_ebss
@@ -4935,10 +4935,10 @@ Infinite_Loop:
  8001c12:	4798      	blx	r3
  8001c14:	3601      	adds	r6, #1
  8001c16:	e7f2      	b.n	8001bfe <__libc_init_array+0x1e>
- 8001c18:	080025ac 	.word	0x080025ac
- 8001c1c:	080025ac 	.word	0x080025ac
- 8001c20:	080025ac 	.word	0x080025ac
- 8001c24:	080025b0 	.word	0x080025b0
+ 8001c18:	080025a8 	.word	0x080025a8
+ 8001c1c:	080025a8 	.word	0x080025a8
+ 8001c20:	080025a8 	.word	0x080025a8
+ 8001c24:	080025ac 	.word	0x080025ac
 
 08001c28 <memset>:
  8001c28:	4603      	mov	r3, r0
@@ -5256,9 +5256,9 @@ Infinite_Loop:
  8001f14:	f000 f87c 	bl	8002010 <_printf_i>
  8001f18:	e7eb      	b.n	8001ef2 <_svfiprintf_r+0x1c2>
  8001f1a:	bf00      	nop
- 8001f1c:	08002578 	.word	0x08002578
- 8001f20:	0800257e 	.word	0x0800257e
- 8001f24:	08002582 	.word	0x08002582
+ 8001f1c:	08002574 	.word	0x08002574
+ 8001f20:	0800257a 	.word	0x0800257a
+ 8001f24:	0800257e 	.word	0x0800257e
  8001f28:	00000000 	.word	0x00000000
  8001f2c:	08001c79 	.word	0x08001c79
 
@@ -5597,8 +5597,8 @@ Infinite_Loop:
  800224c:	2500      	movs	r5, #0
  800224e:	f104 0619 	add.w	r6, r4, #25
  8002252:	e7f5      	b.n	8002240 <_printf_i+0x230>
- 8002254:	08002589 	.word	0x08002589
- 8002258:	0800259a 	.word	0x0800259a
+ 8002254:	08002585 	.word	0x08002585
+ 8002258:	08002596 	.word	0x08002596
 
 0800225c <memchr>:
  800225c:	4603      	mov	r3, r0
