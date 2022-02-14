@@ -70,7 +70,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	}
 }
 
-int16_t my_decode(decode_results *results)
+int16_t ir_decode(decode_results *results)
 {
 	if(irparams.rcvstate != STATE_STOP) return 0;
 
@@ -79,11 +79,11 @@ int16_t my_decode(decode_results *results)
 	results->overflow = irparams.overflow;
 
 	if(decodeHash(results)) return 1;
-	my_enableIRIn();
+	ir_enableIRIn();
 	return 0;
 }
 
-void my_enableIRIn()
+void ir_enableIRIn()
 {
 	irparams.rcvstate = STATE_IDLE;
 	irparams.rawlen = 0;
@@ -92,7 +92,7 @@ void my_enableIRIn()
 	HAL_TIM_Base_Start_IT(&htim4);
 }
 
-void my_resume() // Restart the ISR state machine
+void ir_resume() // Restart the ISR state machine
 {
 	irparams.rcvstate = STATE_IDLE;
 	irparams.rawlen = 0;

@@ -4,7 +4,7 @@
 
 extern TIM_HandleTypeDef htim4;
 
-#define RECIV_PIN (HAL_GPIO_ReadPin(IR_Input_GPIO_Port, IR_Input_Pin))
+#define RECIV_PIN (HAL_GPIO_ReadPin(IR_Receiver_GPIO_Port, IR_Receiver_Pin))
 
 #define RAWBUF 256
 
@@ -38,7 +38,7 @@ typedef struct
 		int16_t overflow; // true iff IR raw code too long
 } decode_results;
 
-int16_t my_decode(decode_results *results);
+int16_t ir_decode(decode_results *results);
 int32_t decodeHash(decode_results *results);
-void my_enableIRIn();
-void my_resume();
+void ir_enableIRIn();
+void ir_resume();

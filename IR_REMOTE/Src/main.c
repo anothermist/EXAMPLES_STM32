@@ -99,19 +99,19 @@ int main(void)
   snprintf(trans_str, 64, "IR-receiver\r\n");
   HAL_UART_Transmit(&huart1, (uint8_t*)trans_str, strlen(trans_str), 100);
 
-  my_enableIRIn();
+  ir_enableIRIn();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	if(my_decode(&results))
+	if(ir_decode(&results))
 	{
 		snprintf(trans_str, 64, "Code: HEX %p DEC %lu\r\n", (void*)results.value, results.value);
 		HAL_UART_Transmit(&huart1, (uint8_t*)trans_str, strlen(trans_str), 100);
 		HAL_Delay(300);
-		my_resume();
+		ir_resume();
 	}
     /* USER CODE END WHILE */
 
@@ -250,11 +250,11 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
-  /*Configure GPIO pin : IR_Input_Pin */
-  GPIO_InitStruct.Pin = IR_Input_Pin;
+  /*Configure GPIO pin : IR_Receiver_Pin */
+  GPIO_InitStruct.Pin = IR_Receiver_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(IR_Input_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(IR_Receiver_GPIO_Port, &GPIO_InitStruct);
 
 }
 
