@@ -95,11 +95,11 @@ int main(void)
   MX_USART1_UART_Init();
   MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
+  ir_enableIRIn();
+  
   char trans_str[64] = {0,};
   snprintf(trans_str, 64, "IR-receiver\r\n");
   HAL_UART_Transmit(&huart1, (uint8_t*)trans_str, strlen(trans_str), 100);
-
-  ir_enableIRIn();
   /* USER CODE END 2 */
 
   /* Infinite loop */
