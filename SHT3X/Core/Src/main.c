@@ -100,11 +100,7 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 	while (1) {
-//		SHT3X_Update();
-//		temperature = SHT3X_getTemperature();
-//		humidity = SHT3X_getHumidity();
-//		 HAL_UART_Transmit(&huart1, (uint8_t*)&ch, 1, HAL_MAX_DELAY);
-
+	
 	    SHT3X_Update();
 	    float temperature = SHT3X_getTemperature();
 	    float humidity = SHT3X_getHumidity();

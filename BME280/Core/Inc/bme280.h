@@ -7,7 +7,7 @@
 
 #include "stm32f1xx_hal.h"
 
-#define BME280_I2C 			hi2c2
+#define BME280_I2C 			hi2c1
 #define BME280_ADDR_G		0x76							 //Address with SDO connected to GND
 #define BME280_ADDR_V		0x77							 //Address with SDO connected to VDDIO
 #define BME280_ADDR		(BME280_ADDR_G) << 1 //Left shift to match the addressing format
